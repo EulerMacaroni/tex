@@ -1,0 +1,112 @@
+\documentclass[11pt, letterpaper, reqno]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{ amssymb }
+\usepackage{ mathrsfs }
+\pagenumbering{gobble}
+
+\usepackage{titlesec}
+\titleformat{\subsection}[runin]{\bfseries}{}{}{}[]
+\setlength{\parindent}{0mm}
+\usepackage[margin=1.1in]{geometry}
+
+\usepackage{amsthm}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{amsfonts} 
+\usepackage{tikz}
+\usepackage{mathtools}  
+\usepackage{physics}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{mdframed}
+\allowdisplaybreaks % doesn't push the whole align to next page
+
+\title{{course code}: {course name} -- Assignment \# {Assignment \# } }
+
+\author{Muhammad Azeem}
+\date{\today} 
+\begin{document} 
+\maketitle
+\newpage
+
+\section*{Question \# 1 } Consider an $L$-layered feed forward network recursively defined by 
+
+\[ 
+h_0 = x, \quad h_{\ell +1} = g(W h_\ell ) , \quad \ell = 1,2, \dots , L-1 , \quad f_W (x) = h_L,
+\]
+where $x \in \mathbb{R}^d$ is the input vector, $g : \mathbb{R}^d \to \mathbb{R}^d$ is the element-wise activation function, $W \in \mathbb{R}^{d \times d } $  is a shared parameter weight matrix across the network, and $h_\ell$ are the hidden activation at the $\ell$-th layer. 
+
+\subsection*{(a)} Suppose $d=1$, $g$ is the sigmoid activation, and $W = c >0 $ for some positive constant $c \in \mathbb{R}$. Find the tightest possible bounds on the quantity $\displaystyle \abs{\pdv{f_W}{x}}$ and identify what phenomena occurs as we increase the network depth.
+
+\subsection*{Proof.} For, $d=1$ let $g : \mathbb{R}^1 \to \mathbb{R}^1$ be sigmoid function defined as:
+\[ 
+g(z) = \frac{1}{1+e^{-z}} = \frac{e^z}{1 + e^z}
+\]
+Furthermore, let $W = c \in \mathbb{R}^+ $ then by recursive definition of $h_\ell $ for $\ell = 1 , 2 , \dots , L-1$ we have:
+\[ 
+h_L = g( c h_{L-1} ) = g( c (g(c h_{L_1})) ) = \cdots = g ( c ( g(c \cdots g(c h_0)) ) ) 
+\]
+
+By chain rule it follows the derivative of $f_W(x)$ with respect of $x$ is 
+\[ 
+\pdv{f_W}{x} = \pdv{h_L}{x} = \prod_{\ell = 0}^{L-1} \left (  c g^\prime(c h_\ell)  \right) = c^L \prod_{\ell =0}^{L-1} g^\prime (c h_\ell)
+\]
+Taking the absolute value of above we get:
+\begin{align*}
+  \abs{\pdv{f_W}{x}}  &= \abs{c^L \prod_{\ell =0}^{L-1} g^\prime (c h_\ell)} = c^L \prod_{\ell = 0}^{L-1} \abs{g^\prime(c h_\ell)}   \tag{$c > 0$}
+\end{align*}
+Note that since $\displaystyle g(z) = \frac{1}{1+e^{-z}}$ then $e^{-z} = \frac{1}{g(z)} -1$ and the derivative of $g$ using chain rule:
+
+\[ 
+g^\prime (z) = \frac{e^{-z}}{(1+e^{-z})^2} =   \left(  \frac{1}{g(z)} -1\right) g^2(z) = g(z)( 1 - g(z) )
+\]
+Since $0 < g(z) < 1 $, then 
+\[ 
+\max_{z \in \mathbb{R}} g^\prime (z) = \max_{z \in \mathbb{R}} g(z) ( 1- g(z) ) 
+\]
+then $g^\prime(z) \leq \frac{1}{4} $ when $g(z) = \frac{1}{2}$ which is at $z=0$ for all $z \in \mathbb{R}$. 
+% Therefore, we have an upper bound for $g^\prime (z) \leq \frac{1}{4} $ for all $z \in \mathbb{R}$ 
+Then we have
+
+\begin{align*}
+  \abs{\pdv{f_W}{x}}  &=  c^L \prod_{\ell = 0}^{L-1} \abs{g^\prime(c h_\ell)}  \\
+  &\leq c^L \prod_{\ell = 0}^{L-1} \abs{\frac{1}{4}}   \\
+  &= c^L \left(\frac{1}{4}\right)^L = \left(\frac{c}{4}\right)^L
+\end{align*}
+Thus the tightest bound is 
+\[ 
+\abs{\pdv{f_W}{x}}  \leq \left(\frac{c}{4}\right)^L
+\]
+To see what happens as $L$ increases we consider three cases
+\begin{enumerate}
+\item {If $c<4$:} The factor $\frac{c}{4}$ is less than $1$ so as $L$ increases,
+\[ 
+   \left(\frac{c}{4}\right)^L \to 0
+\]
+In other words, the gradients vanish exponentially with the depth of the network. This is the well-known vanishing gradient problem.
+\item {If $c>4$:} Then the bound becomes 
+\[ 
+   \left(\frac{c}{4}\right)^L \to \infty 
+\]
+as $L$ increases. Thus, the gradients can grow exponentially and explode. This is known as the exploding gradient problem. 
+\item {If $c=4$:} Then the bound becomes 
+\[ 
+   \left(\frac{c}{4}\right)^L = 1^L = 1
+\]
+In this critical case, the bound is constant, though it is a knife‐edge scenario and actual values may still vary with $x$.
+
+\end{enumerate}
+
+\qed
+
+\subsection*{(b)} Repeat the previous part but use the $\tanh$ activation in place of the sigmoid. Compare your bounds here with what you obtained in the previous part.
+
+\subsection*{Proof.} Let $g : \mathbb{R} \to \mathbb{R}$ defined as 
+
+
+
+\end{document}
+
+
+
