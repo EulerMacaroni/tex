@@ -1,0 +1,123 @@
+\documentclass[10pt]{beamer}
+
+% Theme
+\usetheme{metropolis}
+\usefonttheme[onlymath]{serif}
+\usepackage{appendixnumberbeamer}
+
+% Packages
+\usepackage{amsmath, amssymb}
+\usepackage{bm}
+\usepackage{physics}
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+\usepackage{pgfplots}
+\usepackage{xspace}
+
+% Title Information
+\title{<TITLE>}
+\subtitle{<SUB-TITLE>}
+\date{\today}
+\author{<NAME>}
+\institute{<SCHOOL>}
+
+\begin{document}
+
+%------------------------------------------------
+\maketitle
+%------------------------------------------------
+
+\begin{frame}{Outline}
+\tableofcontents
+\end{frame}
+
+%------------------------------------------------
+\section{Introduction}
+%------------------------------------------------
+
+\begin{frame}{Motivation}
+Randomized Numerical Linear Algebra (RandNLA) studies algorithms that use randomness to:
+\begin{itemize}
+    \item Reduce computational cost
+    \item Handle large-scale matrices
+    \item Approximate matrix products
+    \item Solve least squares problems efficiently
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\section{Approximate Matrix Multiplication}
+%------------------------------------------------
+
+\begin{frame}{Approximate Matrix Multiplication}
+Goal: Approximate the product $AB$ using a sketching matrix $S$:
+\[
+AB \approx A S^\top S B
+\]
+
+\begin{block}{Idea}
+Instead of multiplying large matrices directly, we compress them using a random sketch.
+\end{block}
+\end{frame}
+
+%------------------------------------------------
+\section{Subspace Embeddings}
+%------------------------------------------------
+
+\begin{frame}{Subspace Embeddings}
+We want to preserve:
+\[
+\|A \bm{x}\| \quad \text{for all } \bm{x}
+\]
+
+  \metroset{block=fill}
+    \begin{block}{Definition}
+    A matrix $S \in \mathbb{R}^{s \times n}$ is a subspace embedding for $A$ if
+    \[
+    \| I - (SU)^\top (SU) \|_2 \le \epsilon
+    \]
+    where $U$ is an orthonormal basis for the column space of $A$.
+    \end{block}
+\end{frame}
+
+%------------------------------------------------
+\section{Example}
+%------------------------------------------------
+
+\begin{frame}{Example Least Squares}
+Original problem:
+\[
+\min_x \|Ax - b\|_2
+\]
+
+Sketched problem:
+\[
+\min_x \|SAx - Sb\|_2
+\]
+
+This reduces computation when $s \ll n$.
+\end{frame}
+
+%------------------------------------------------
+\section{Conclusion}
+%------------------------------------------------
+
+\begin{frame}{Conclusion}
+\begin{itemize}
+    \item Sketching reduces dimensionality
+    \item Subspace embeddings preserve geometry
+    \item Useful for least squares and large-scale ML
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{References}
+\begin{thebibliography}{9}
+\bibitem{randnla}
+xxxx, x. x. (2011).
+title title
+\end{thebibliography}
+\end{frame}
+%------------------------------------------------
+
+\end{document}
